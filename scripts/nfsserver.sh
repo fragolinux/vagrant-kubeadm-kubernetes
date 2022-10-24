@@ -12,7 +12,7 @@ sudo chown -R nobody:nogroup /mnt/data
 sudo chmod 777 /mnt/data
 
 # added 'no_root_squash' - please carefully read nfs documentation what that means
-echo '/mnt/data 10.0.0.0/24(rw,sync,no_subtree_check,no_root_squash)' >> /etc/exports
+echo '/mnt/data 172.11.0.0/24(rw,sync,no_subtree_check,no_root_squash)' >> /etc/exports
 sudo exportfs -a
 sudo systemctl restart nfs-kernel-server
 
