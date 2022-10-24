@@ -16,9 +16,9 @@ sudo swapoff -a
 sudo apt-get update -y
 # Install CRI-O Runtime
 
-OS="xUbuntu_20.04"
+OS="xUbuntu_22.04"
 
-VERSION="1.23"
+VERSION="1.25"
 
 # Create the .conf file to load the modules at bootup
 cat <<EOF | sudo tee /etc/modules-load.d/crio.conf
