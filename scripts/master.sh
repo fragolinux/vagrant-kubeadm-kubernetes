@@ -6,7 +6,7 @@ set -euxo pipefail
 
 MASTER_IP="172.11.0.10"
 NODENAME=$(hostname -s)
-POD_CIDR="172.12.0.0/16"
+export POD_CIDR="172.12.0.0/16"
 
 sudo kubeadm config images pull
 
@@ -40,7 +40,15 @@ kubeadm token create --print-join-command > /vagrant/configs/join.sh
 
 curl https://docs.projectcalico.org/manifests/calico.yaml -O
 
-kubectl apply -f calico.yaml
+sedi=(-i) # use "${sedi[@]}" instead of -i in sed options
+case "$(uname)" in
+    Darwin*) sedi=(-i "") ;;
+esac
+
+sed "${sedi[@]}" -e "s^# - name: CALICO_IPV4POOL_CIDR^- name: CALICO_IPV4POOL_CIDR^" calico.yaml
+sed "${sedi[@]}" -e "s^#   value: \"192.168.0.0/16\"^  value: \${POD_CIDR}^" calico.yaml
+
+envsubst "$POD_CIDR" < calico.yaml | kubectl apply -f -
 
 # Install Metrics Server
 
