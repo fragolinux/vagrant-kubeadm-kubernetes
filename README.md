@@ -3,7 +3,7 @@
 
 ## Documentation
 
-Current k8s version for CKA, CKAD and CKS exam: 1.24
+Current k8s version for CKA, CKAD and CKS exam: 1.25
 
 Refer this link for documentation: https://devopscube.com/kubernetes-cluster-vagrant/
 
@@ -17,6 +17,9 @@ If you are preparing for CKA, CKAD, CKS, or KCNA exam, **save 35%** today using 
 2. 8 Gig + RAM workstation as the Vms use 3 vCPUS and 4+ GB RAM
 
 ## For MAC/Linux Users
+
+brew install vagrant
+brew install --cask virtualbox
 
 Latest version of Virtualbox for Mac/Linux can cause issues because you have to create/edit the /etc/vbox/networks.conf file and add:
 <pre>* 0.0.0.0/0 ::/0</pre>
