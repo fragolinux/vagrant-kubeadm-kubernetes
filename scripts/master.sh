@@ -46,44 +46,44 @@ case "$(uname)" in
 esac
 
 sed "${sedi[@]}" -e "s^# - name: CALICO_IPV4POOL_CIDR^- name: CALICO_IPV4POOL_CIDR^" calico.yaml
-sed "${sedi[@]}" -e "s^#   value: \"192.168.0.0/16\"^  value: \${POD_CIDR}^" calico.yaml
+sed "${sedi[@]}" -e "s^#   value: \"192.168.0.0/16\"^  value: \"\${POD_CIDR}\"^" calico.yaml
 
-envsubst "$POD_CIDR" < calico.yaml | kubectl apply -f -
+envsubst '${POD_CIDR}' < calico.yaml | kubectl apply -f -
 
 # Install Metrics Server
 
 kubectl apply -f https://raw.githubusercontent.com/scriptcamp/kubeadm-scripts/main/manifests/metrics-server.yaml
 
-# Install Kubernetes Dashboard
+# # Install Kubernetes Dashboard
 
-kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.7.0/aio/deploy/recommended.yaml
+# kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.7.0/aio/deploy/recommended.yaml
 
-# Create Dashboard User
+# # Create Dashboard User
 
-cat <<EOF | kubectl apply -f -
-apiVersion: v1
-kind: ServiceAccount
-metadata:
-  name: admin-user
-  namespace: kubernetes-dashboard
-EOF
+# cat <<EOF | kubectl apply -f -
+# apiVersion: v1
+# kind: ServiceAccount
+# metadata:
+#   name: admin-user
+#   namespace: kubernetes-dashboard
+# EOF
 
-cat <<EOF | kubectl apply -f -
-apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRoleBinding
-metadata:
-  name: admin-user
-roleRef:
-  apiGroup: rbac.authorization.k8s.io
-  kind: ClusterRole
-  name: cluster-admin
-subjects:
-- kind: ServiceAccount
-  name: admin-user
-  namespace: kubernetes-dashboard
-EOF
+# cat <<EOF | kubectl apply -f -
+# apiVersion: rbac.authorization.k8s.io/v1
+# kind: ClusterRoleBinding
+# metadata:
+#   name: admin-user
+# roleRef:
+#   apiGroup: rbac.authorization.k8s.io
+#   kind: ClusterRole
+#   name: cluster-admin
+# subjects:
+# - kind: ServiceAccount
+#   name: admin-user
+#   namespace: kubernetes-dashboard
+# EOF
 
-kubectl -n kubernetes-dashboard get secret "$(kubectl -n kubernetes-dashboard get sa/admin-user -o jsonpath="{.secrets[0].name}")" -o go-template="{{.data.token | base64decode}}" >> /vagrant/configs/token
+# kubectl -n kubernetes-dashboard get secret "$(kubectl -n kubernetes-dashboard get sa/admin-user -o jsonpath="{.secrets[0].name}")" -o go-template="{{.data.token | base64decode}}" >> /vagrant/configs/token
 
 sudo -i -u vagrant bash << EOF
 whoami
