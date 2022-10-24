@@ -18,7 +18,7 @@ If you are preparing for CKA, CKAD, CKS, or KCNA exam, **save 35%** today using 
 
 ## For MAC/Linux Users
 
-brew install vagrant
+brew install --cask vagrant
 brew install --cask virtualbox
 
 Latest version of Virtualbox for Mac/Linux can cause issues because you have to create/edit the /etc/vbox/networks.conf file and add:
