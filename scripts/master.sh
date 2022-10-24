@@ -4,9 +4,9 @@
 
 set -euxo pipefail
 
-MASTER_IP="10.0.0.10"
+MASTER_IP="172.11.0.10"
 NODENAME=$(hostname -s)
-POD_CIDR="192.168.0.0/16"
+POD_CIDR="172.12.0.0/16"
 
 sudo kubeadm config images pull
 
@@ -48,7 +48,7 @@ kubectl apply -f https://raw.githubusercontent.com/scriptcamp/kubeadm-scripts/ma
 
 # Install Kubernetes Dashboard
 
-kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.5.1/aio/deploy/recommended.yaml
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.7.0/aio/deploy/recommended.yaml
 
 # Create Dashboard User
 
