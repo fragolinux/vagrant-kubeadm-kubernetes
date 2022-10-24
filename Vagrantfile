@@ -1,5 +1,5 @@
 NUM_WORKER_NODES=2
-IP_NW="10.0.0."
+IP_NW="172.11.0."
 IP_START=10
 IP_NFS_SERVER=200
 
@@ -19,8 +19,8 @@ Vagrant.configure("2") do |config|
     nfsserver.vm.hostname = "nfs-server"
     nfsserver.vm.network "private_network", ip: IP_NW + "#{IP_NFS_SERVER}"
     nfsserver.vm.provider "virtualbox" do |vb|
-        vb.memory = 4048
-        vb.cpus = 2
+        vb.memory = 2048
+        vb.cpus = 1
     end
     nfsserver.vm.provision "shell", path: "scripts/common.sh"
     nfsserver.vm.provision "shell", path: "scripts/nfsserver.sh"
@@ -31,7 +31,7 @@ Vagrant.configure("2") do |config|
     master.vm.hostname = "master-node"
     master.vm.network "private_network", ip: IP_NW + "#{IP_START}"
     master.vm.provider "virtualbox" do |vb|
-        vb.memory = 4048
+        vb.memory = 2048
         vb.cpus = 2
     end
     master.vm.provision "shell", path: "scripts/common.sh"
