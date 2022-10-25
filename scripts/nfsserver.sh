@@ -5,7 +5,8 @@
 
 set -euxo pipefail
 
-sudo apt install -y nfs-kernel-server
+sudo DEBIAN_FRONTEND=noninteractive apt-get update
+sudo DEBIAN_FRONTEND=noninteractive apt-get install -y nfs-kernel-server
 
 sudo mkdir -p /mnt/data
 sudo chown -R nobody:nogroup /mnt/data

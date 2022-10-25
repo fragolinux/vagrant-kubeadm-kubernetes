@@ -40,13 +40,8 @@ kubeadm token create --print-join-command > /vagrant/configs/join.sh
 
 curl https://docs.projectcalico.org/manifests/calico.yaml -O
 
-sedi=(-i) # use "${sedi[@]}" instead of -i in sed options
-case "$(uname)" in
-    Darwin*) sedi=(-i "") ;;
-esac
-
-sed "${sedi[@]}" -e "s^# - name: CALICO_IPV4POOL_CIDR^- name: CALICO_IPV4POOL_CIDR^" calico.yaml
-sed "${sedi[@]}" -e "s^#   value: \"192.168.0.0/16\"^  value: \"\${POD_CIDR}\"^" calico.yaml
+sed -i -e "s^# - name: CALICO_IPV4POOL_CIDR^- name: CALICO_IPV4POOL_CIDR^" calico.yaml
+sed -i -e "s^#   value: \"192.168.0.0/16\"^  value: \"\${POD_CIDR}\"^" calico.yaml
 
 envsubst '${POD_CIDR}' < calico.yaml | kubectl apply -f -
 
@@ -62,6 +57,16 @@ kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.7.0/a
 
 cat <<EOF | kubectl apply -f -
 apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: admin-user
+  namespace: kubernetes-dashboard
+secrets:
+- name: admin-user-token
+EOF
+
+cat <<EOF | kubectl apply -f -
+apiVersion: v1
 kind: Secret
 metadata:
   name: admin-user-token
@@ -69,16 +74,6 @@ metadata:
   annotations:
     kubernetes.io/service-account.name: admin-user
 type: kubernetes.io/service-account-token
-EOF
-
-cat <<EOF | kubectl apply -f -
-apiVersion: v1
-kind: ServiceAccount
-metadata:
-  name: admin-user
-  namespace: kubernetes-dashboard
-secrets:
-- name: admin-user-token
 EOF
 
 cat <<EOF | kubectl apply -f -

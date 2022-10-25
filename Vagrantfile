@@ -22,7 +22,6 @@ Vagrant.configure("2") do |config|
         vb.memory = 2048
         vb.cpus = 1
     end
-    nfsserver.vm.provision "shell", path: "scripts/common.sh"
     nfsserver.vm.provision "shell", path: "scripts/nfsserver.sh"
   end
 
